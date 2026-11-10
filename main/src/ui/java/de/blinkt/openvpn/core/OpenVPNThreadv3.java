@@ -308,7 +308,16 @@ public class OpenVPNThreadv3 extends ClientAPI_OpenVPNClient implements Runnable
     void setUserPW() {
         if (mVp.isUserPWAuth()) {
             ClientAPI_ProvideCreds creds = new ClientAPI_ProvideCreds();
-            creds.setPassword(mVp.getPasswordAuth());
+            String pw = mVp.getPasswordAuth();
+            String totp = mVp.getTotpCode();
+            if (totp != null) {
+                // OpenVPN3 packs the response into SCRV1 itself when the profile
+                // has a static-challenge, otherwise the response is ignored
+                creds.setResponse(totp);
+                if (mVp.mTotpMode == VpnProfile.TOTP_MODE_APPEND && pw != null)
+                    pw = pw + totp;
+            }
+            creds.setPassword(pw);
             creds.setUsername(mVp.mUsername);
             provide_creds(creds);
         }

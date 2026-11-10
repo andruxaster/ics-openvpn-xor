@@ -445,4 +445,20 @@ remote home.evil.cloud 65443 udp
 
     }
 
+
+    @Test
+    @Throws(IOException::class, ConfigParser.ConfigParseError::class)
+    fun testScrambleImport() {
+        val config = ("client\n"
+                + "remote vpn.example.com 1194 udp\n"
+                + "scramble obfuscate s3cr3t\n")
+
+        val cp = ConfigParser()
+        cp.parseConfig(StringReader(config))
+        val vp = cp.convertProfile()
+
+        Assert.assertTrue(vp.mConnections[0].mCustomConfiguration.contains("scramble obfuscate s3cr3t"))
+        Assert.assertTrue(vp.mConnections[0].mUseCustomConfig)
+    }
+
 }

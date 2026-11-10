@@ -37,6 +37,15 @@
         <item>Ignore, retry</item>
         <item>Retry, interactive (not supported)</item>
     </string-array>
+    <string-array name="totp_modes">
+        <item>Answer server challenge (static-challenge / CR_TEXT)</item>
+        <item>Append code to password</item>
+    </string-array>
+    <string-array name="totp_algorithms" translatable="false">
+        <item>SHA1</item>
+        <item>SHA256</item>
+        <item>SHA512</item>
+    </string-array>
     <string-array name="compat_mode">
         <item>Modern defaults</item>
         <item>OpenVPN 2.5.x peers</item>

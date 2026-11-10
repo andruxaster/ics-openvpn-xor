@@ -337,6 +337,15 @@ public class OpenVpnManagementThread implements Runnable, OpenVPNManagement {
 
     private void processInfoMessage(String info)
     {
+        if (info.startsWith("CR_TEXT:")) {
+            String code = mProfile.getTotpCode();
+            if (code != null) {
+                VpnStatus.logInfo("Answering challenge/response request with generated TOTP code");
+                sendCRResponse(b64(code));
+                return;
+            }
+        }
+
         if (info.startsWith("OPEN_URL:") || info.startsWith("CR_TEXT:")
             || info.startsWith("WEB_AUTH:"))
         {
@@ -716,7 +725,8 @@ public class OpenVpnManagementThread implements Runnable, OpenVPNManagement {
             case "Auth":
                 pw = mProfile.getPasswordAuth();
                 username = mProfile.mUsername;
-
+                if (pw != null)
+                    pw = addTotpToPassword(pw, argument);
                 break;
             case "HTTP Proxy":
                 if (mCurrentProxyConnection != null) {
@@ -738,6 +748,50 @@ public class OpenVpnManagementThread implements Runnable, OpenVPNManagement {
             VpnStatus.logError(String.format("Openvpn requires Authentication type '%s' but no password/key information available", needed));
         }
 
+    }
+
+    /**
+     * Combines the password with an app generated TOTP code.
+     * <p>
+     * argument has the form {@code Need 'Auth' username/password [SC:<flag>,<challenge text>]}
+     * flag bit 0: echo, bit 1: concat format (OpenVPN 2.7+ "static-challenge text echo concat")
+     */
+    private String addTotpToPassword(String pw, String argument) {
+        int scIdx = argument.indexOf(" SC:");
+        String code = mProfile.getTotpCode();
+
+        if (scIdx >= 0) {
+            String scPart = argument.substring(scIdx + 4);
+            int comma = scPart.indexOf(',');
+            int flags = 0;
+            try {
+                flags = Integer.parseInt(comma >= 0 ? scPart.substring(0, comma) : scPart);
+            } catch (NumberFormatException ignored) {
+            }
+            String challenge = comma >= 0 ? scPart.substring(comma + 1) : "";
+
+            if (code == null) {
+                VpnStatus.logWarning("Server requests static challenge '" + challenge
+                        + "' but no TOTP secret is configured for this profile");
+                return pw;
+            }
+            VpnStatus.logInfo("Answering static challenge '" + challenge + "' with generated TOTP code");
+            if ((flags & 2) != 0)
+                return pw + code;
+
+            return "SCRV1:" + b64(pw) + ":" + b64(code);
+        }
+
+        if (code != null && mProfile.mTotpMode == VpnProfile.TOTP_MODE_APPEND) {
+            VpnStatus.logInfo("Appending generated TOTP code to the password");
+            return pw + code;
+        }
+        return pw;
+    }
+
+    private static String b64(String s) {
+        return android.util.Base64.encodeToString(s.getBytes(java.nio.charset.StandardCharsets.UTF_8),
+                android.util.Base64.NO_WRAP);
     }
 
     private void processPWFailed(String needed, String args) {

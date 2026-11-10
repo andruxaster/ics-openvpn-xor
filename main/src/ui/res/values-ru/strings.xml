@@ -331,4 +331,14 @@
     <string name="loadossllegacy">Загрузка устаревшего провайдера OpenSSL</string>
     <string name="bf_cbc_requires_legacy">Профили используют BF-CBC, который зависит от устаревшего OpenSSL (отсутствует).</string>
     <string name="tls_profile">Профиль безопасности TLS</string>
+    <string name="totp_use">Генерировать одноразовые TOTP-коды (2FA)</string>
+    <string name="totp_secret">Секрет TOTP</string>
+    <string name="totp_secret_hint">Base32-секрет или ссылка otpauth://totp/…</string>
+    <string name="totp_mode">Как передавать код</string>
+    <string name="totp_digits">Цифр (6)</string>
+    <string name="totp_period">Период, с (30)</string>
+    <string name="totp_preview">Текущий код: %1$s (действует %2$d с)</string>
+    <string name="totp_profile_invalid">TOTP включён, но секрет или его параметры неверны</string>
+    <string name="scramble_needs_openvpn2">Опция XOR \'scramble\' поддерживается только ядром OpenVPN 2.x. Отключите \"Использовать ядро OpenVPN 3\" в настройках.</string>
+    <string name="totp_invalid">Неверные настройки TOTP: %1$s</string>
 </resources>

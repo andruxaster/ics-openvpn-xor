@@ -124,6 +124,7 @@ public class ConfigParser {
             "socks-proxy-retry",
             "http-proxy-user-pass",
             "explicit-exit-notify",
+            "scramble",
     };
     private HashSet<String>  connectionOptionsSet = new HashSet<>(Arrays.asList(connectionOptions));
 

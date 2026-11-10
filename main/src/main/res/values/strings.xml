@@ -36,6 +36,16 @@
     <string name="custom_option_warning">Enter custom OpenVPN options. Use with caution. Also note that many of the tun related OpenVPN settings cannot be supported by design of the VPNSettings. If you think an important option is missing contact the author</string>
     <string name="auth_username">Username (leave empty for no auth)</string>
     <string name="auth_pwquery">Password</string>
+    <string name="totp_use">Generate TOTP one-time codes (2FA)</string>
+    <string name="totp_secret">TOTP secret</string>
+    <string name="totp_secret_hint">Base32 secret or otpauth://totp/… URI</string>
+    <string name="totp_mode">How to send the code</string>
+    <string name="totp_digits">Digits (6)</string>
+    <string name="totp_period">Period, s (30)</string>
+    <string name="totp_preview">Current code: %1$s (valid %2$d s)</string>
+    <string name="totp_profile_invalid">TOTP is enabled but the secret or its parameters are invalid</string>
+    <string name="scramble_needs_openvpn2">The XOR \'scramble\' option is only supported by the OpenVPN 2.x core. Disable \"Use OpenVPN 3 core\" in the settings.</string>
+    <string name="totp_invalid">Invalid TOTP settings: %1$s</string>
     <string name="static_keys_info">For the static configuration the TLS Auth Keys will be used as static keys</string>
     <string name="configure_the_vpn">Configure the VPN</string>
     <string name="menu_add_profile">Add Profile</string>

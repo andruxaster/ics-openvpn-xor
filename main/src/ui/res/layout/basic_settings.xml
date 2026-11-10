@@ -231,6 +231,91 @@
                 android:hint="@string/pw_query_hint"
                 android:inputType="textPassword" />
 
+            <CheckBox
+                android:id="@+id/use_totp"
+                style="@style/item"
+                android:layout_marginLeft="8dip"
+                android:layout_marginRight="8dip"
+                android:text="@string/totp_use" />
+
+            <LinearLayout
+                android:id="@+id/totp_settings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/item"
+                    android:layout_marginLeft="8dip"
+                    android:layout_marginRight="8dip"
+                    android:text="@string/totp_secret"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <EditText
+                    android:id="@+id/totp_secret"
+                    style="@style/item"
+                    android:layout_marginLeft="8dip"
+                    android:layout_marginRight="8dip"
+                    android:hint="@string/totp_secret_hint"
+                    android:inputType="textPassword|textNoSuggestions" />
+
+                <TextView
+                    style="@style/item"
+                    android:layout_marginLeft="8dip"
+                    android:layout_marginRight="8dip"
+                    android:text="@string/totp_mode"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+
+                <Spinner
+                    android:id="@+id/totp_mode"
+                    style="@style/item"
+                    android:layout_marginLeft="8dip"
+                    android:layout_marginRight="8dip"
+                    android:entries="@array/totp_modes"
+                    android:prompt="@string/totp_mode" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dip"
+                    android:layout_marginRight="8dip"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/totp_digits"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="@string/totp_digits"
+                        android:inputType="number"
+                        android:maxLength="2" />
+
+                    <EditText
+                        android:id="@+id/totp_period"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="@string/totp_period"
+                        android:inputType="number"
+                        android:maxLength="4" />
+
+                    <Spinner
+                        android:id="@+id/totp_algorithm"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:entries="@array/totp_algorithms" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/totp_preview"
+                    style="@style/item"
+                    android:layout_marginLeft="8dip"
+                    android:layout_marginRight="8dip"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+            </LinearLayout>
+
             <TextView
                 style="@style/item"
                 android:layout_marginLeft="8dip"

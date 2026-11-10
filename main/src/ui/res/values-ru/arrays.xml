@@ -29,4 +29,8 @@
         <item>Игнорировать, повторить</item>
         <item>Retry, interactive (not supported)</item>
     </string-array>
+    <string-array name="totp_modes">
+        <item>Отвечать на запрос сервера (static-challenge / CR_TEXT)</item>
+        <item>Добавлять код к паролю</item>
+    </string-array>
 </resources>
