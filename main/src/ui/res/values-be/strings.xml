@@ -409,12 +409,9 @@
     <string name="openssl_error">OpenSSL вярнуў памылку</string>
     <string name="running_test">Тэставанне&#8230;</string>
     <string name="all_app_prompt">Знешняя праграма спрабуе кантраляваць %s. Праграма, якая запытала доступ не вызначана. УСЕ астатнія праграмы атрымаюць доступ, калі вы ўхваліце доступ гэтай праграме.</string>
-    <string name="openvpn3_nostatickeys">Рэалізацыя OpenVPN 3 на C++ не падтрымлівае статычныя ключы. Калі ласка, змяніце на OpenVPN 2.x у агульных наладах.</string>
-    <string name="openvpn3_pkcs12">Выкарыстанне файлаў PKCS12 напрамую з дапамогай рэалізацыі OpenVPN 3 на С++ не падтрымліваецца. Імпартуйце файлы PKCS12 у сховішча ключоў Android або змяніце на OpenVPN 2.x у агульных наладах.</string>
     <string name="proxy">Проксі</string>
     <string name="Use_no_proxy">Няма</string>
     <string name="tor_orbot">Tor (Orbot)</string>
-    <string name="openvpn3_socksproxy">Рэалізацыя OpenVPN 3 на C++ не падтрымлівае падлучэнне праз проксі Socks</string>
     <string name="no_orbotfound">Праграма Orbot не знойдзеная. Калі ласка, усталюйце яе ўручную або зрабіце інтэграцыю Socks v5.</string>
     <string name="faq_remote_api_title">Аддалены API</string>
     <string name="faq_remote_api"> падтрымлівае два аддаленых API: складаны, які выкарыстоўвае AIDL (remoteEXample у рэпазіторыі git) і просты, які выкарыстоўвае Intents. &lt;p&gt;Прыклады выкарыстання абалонкі adb і intents. Замяніце назву профілю на сваю ўласную&lt;p&gt;&lt;p&gt; adb shell am start-activity -a android.intent.action.MAIN de.blinkt.openvpn/.api.DisconnectVPN&lt;p&gt; adb shell am start-activity -a android.intent.action.MAIN -e de.blinkt.openvpn.api.profileName Blinkt de.blinkt.openvpn/.api.ConnectVPN</string>

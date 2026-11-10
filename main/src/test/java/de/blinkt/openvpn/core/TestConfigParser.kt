@@ -71,13 +71,13 @@ class TestConfigParser {
         cp.parseConfig(StringReader(miniconfig + fakeCerts))
         val vp = cp.convertProfile()
 
-        val outConfig = vp.getConfigFile(ApplicationProvider.getApplicationContext(), false)
+        val outConfig = vp.getConfigFile(ApplicationProvider.getApplicationContext())
 
         cp = ConfigParser()
         cp.parseConfig(StringReader(outConfig))
         val vp2 = cp.convertProfile()
 
-        val outConfig2 = vp2.getConfigFile(ApplicationProvider.getApplicationContext(), false)
+        val outConfig2 = vp2.getConfigFile(ApplicationProvider.getApplicationContext())
 
         Assert.assertEquals(outConfig, outConfig2)
         Assert.assertFalse(vp.mUseCustomConfig)
@@ -199,7 +199,7 @@ class TestConfigParser {
         cp.parseConfig(StringReader(config2))
         val vp2 = cp.convertProfile()
         Assert.assertEquals(20400, vp2.mCompatMode)
-        val conf2 = vp2.getConfigFile(c, false)
+        val conf2 = vp2.getConfigFile(c)
         Assert.assertTrue(conf2.contains("compat-mode 2.4.0"));
 
         val config3 = config + "compat-mode 1.17.23\n";
@@ -207,7 +207,7 @@ class TestConfigParser {
         val vp3 = cp.convertProfile()
         Assert.assertEquals(11723, vp3.mCompatMode)
 
-        val conf = vp3.getConfigFile(c, false)
+        val conf = vp3.getConfigFile(c)
         Assert.assertTrue(conf.contains("compat-mode 1.17.23"))
     }
 
@@ -251,7 +251,7 @@ class TestConfigParser {
         Assert.assertEquals(Connection.ProxyType.HTTP, vp.mConnections[2].mProxyType)
 
         val c:Context = ApplicationProvider.getApplicationContext()
-        val err = vp.checkProfile(c, false)
+        val err = vp.checkProfile(c)
         Assert.assertTrue("Failed with wrong error code: $err", err == R.string.no_error_found)
     }
 
@@ -292,11 +292,7 @@ class TestConfigParser {
         val cp = ConfigParser()
         cp.parseConfig(StringReader(proxy))
         val vp = cp.convertProfile()
-        var config = vp.getConfigFile(ApplicationProvider.getApplicationContext(), true)
-        Assert.assertTrue(config.contains("username12"))
-        Assert.assertTrue(config.contains("http-proxy 1.2.3.4"))
-
-        config = vp.getConfigFile(ApplicationProvider.getApplicationContext(), false)
+        val config = vp.getConfigFile(ApplicationProvider.getApplicationContext())
 
         Assert.assertFalse(config.contains("username12"))
         Assert.assertFalse(config.contains("http-proxy 1.2.3.4"))
@@ -339,10 +335,9 @@ class TestConfigParser {
         cp.parseConfig(StringReader(proxyconf))
         val vp = cp.convertProfile()
 
-        Assert.assertEquals(vp.checkProfile(ApplicationProvider.getApplicationContext(), true).toLong(), R.string.no_error_found.toLong())
-        Assert.assertEquals(vp.checkProfile(ApplicationProvider.getApplicationContext(), false).toLong(), R.string.no_error_found.toLong())
+        Assert.assertEquals(vp.checkProfile(ApplicationProvider.getApplicationContext()).toLong(), R.string.no_error_found.toLong())
 
-        val config = vp.getConfigFile(ApplicationProvider.getApplicationContext(), false)
+        val config = vp.getConfigFile(ApplicationProvider.getApplicationContext())
 
         Assert.assertTrue(config.contains("http-proxy 1.2.3.4"))
         Assert.assertFalse(config.contains("management-query-proxy"))
@@ -355,7 +350,7 @@ class TestConfigParser {
 
         vp.mConnections[vp.mConnections.size - 1].mProxyType = Connection.ProxyType.ORBOT
 
-        Assert.assertEquals(vp.checkProfile(ApplicationProvider.getApplicationContext(), false).toLong(), R.string.error_orbot_and_proxy_options.toLong())
+        Assert.assertEquals(vp.checkProfile(ApplicationProvider.getApplicationContext()).toLong(), R.string.error_orbot_and_proxy_options.toLong())
 
     }
 
@@ -398,7 +393,7 @@ verify-x509-name homevpn.evil.cloud name
 
         val vp = cp.convertProfile()
 
-        val config = vp.getConfigFile(ApplicationProvider.getApplicationContext(), true)
+        val config = vp.getConfigFile(ApplicationProvider.getApplicationContext())
 
         Assert.assertEquals("tls-crypt-v2", vp.mTLSAuthDirection)
 

@@ -55,7 +55,7 @@ public class TestConfigGenerator {
 
         vp.mAuthenticationType = TYPE_USERPASS;
         vp.mAuthRetry = AUTH_RETRY_NOINTERACT;
-        String config = vp.getConfigFile(RuntimeEnvironment.application, false);
+        String config = vp.getConfigFile(RuntimeEnvironment.application);
         Assert.assertTrue(config.contains("\nauth-retry nointeract\n"));
         for (Connection connection: vp.mConnections)
             Assert.assertTrue(connection.mProxyType == Connection.ProxyType.NONE);

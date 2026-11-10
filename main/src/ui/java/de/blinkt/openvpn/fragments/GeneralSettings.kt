@@ -20,7 +20,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts.RequestPermission
 import androidx.appcompat.app.AlertDialog
 import androidx.preference.*
-import de.blinkt.openvpn.BuildConfig
 import de.blinkt.openvpn.R
 import de.blinkt.openvpn.activities.OpenSSLSpeed
 import de.blinkt.openvpn.api.ConfirmDialog.ANONYMOUS_PACKAGE
@@ -60,12 +59,6 @@ class GeneralSettings : PreferenceFragmentCompat(), Preference.OnPreferenceClick
         clearapi.onPreferenceClickListener = this
         findPreference<Preference>("osslspeed")!!.onPreferenceClickListener = this
         if (devHacks.preferenceCount == 0) preferenceScreen.removePreference(devHacks)
-        if (!BuildConfig.openvpn3) {
-            val appBehaviour = findPreference<Preference>("app_behaviour") as PreferenceCategory
-            val ovpn3 = findPreference<Preference>("ovpn3") as CheckBoxPreference
-            ovpn3.isEnabled = false
-            ovpn3.isChecked = false
-        }
 
         val startOnBoot =
             findPreference<Preference>("restartvpnonboot") as CheckBoxPreference

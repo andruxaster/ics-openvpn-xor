@@ -15,16 +15,6 @@
                 android:summary="@string/show_log_summary"
                 android:title="@string/show_log_window" />
 
-        <CheckBoxPreference
-                android:defaultValue="false"
-                android:disableDependentsState="true"
-                android:key="ovpn3"
-                android:singleLineTitle="false"
-                android:summaryOff="Use OpenVPN 2.x"
-                android:summaryOn="Use the C++ OpenVPN library (experimental)"
-                android:title="OpenVPN 3 Core" />
-
-
         <de.blinkt.openvpn.views.DefaultVPNListPreference
                 android:key="alwaysOnVpn"
                 android:singleLineTitle="false"
@@ -65,7 +55,6 @@
     <PreferenceCategory android:title="@string/vpnbehaviour">
         <CheckBoxPreference
                 android:defaultValue="true"
-                android:dependency="ovpn3"
                 android:key="usesystemproxy"
                 android:singleLineTitle="false"
                 android:summary="@string/use_system_proxy_summary"

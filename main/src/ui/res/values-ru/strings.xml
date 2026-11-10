@@ -299,7 +299,6 @@
     <string name="channel_name_status">Изменение статуса подключения</string>
     <string name="title_activity_open_sslspeed">Тест скорости OpenSSL</string>
     <string name="openssl_error">OpenSSL возвратил ошибку</string>
-    <string name="openvpn3_nostatickeys">Реализация OpenVPN 3 на C ++ не поддерживает статические ключи. Переключитесь на OpenVPN 2.x в общих настройках.</string>
     <string name="proxy">Прокси</string>
     <string name="faq_remote_api_title">Удалённый API</string>
     <string name="faq_remote_api">OpenVPN для Android поддерживает два удалённых API: сложный API с использованием AIDL (remoteEXample в репозитории git) и простой с использованием Intents.&lt;p&gt;Примеры использования оболочки adb и intents. Замените profileName на название своей конфигурации&lt;p&gt;&lt;p&gt; adb shell am start-activity -a android.intent.action.MAIN de.blinkt.openvpn/.api.DisconnectVPN&lt;p&gt; adb shell am start-activity -a android.intent.action.MAIN -e de.blinkt.openvpn.api.profileName Blinkt de.blinkt.openvpn/.api.ConnectVPN</string>
@@ -339,6 +338,5 @@
     <string name="totp_period">Период, с (30)</string>
     <string name="totp_preview">Текущий код: %1$s (действует %2$d с)</string>
     <string name="totp_profile_invalid">TOTP включён, но секрет или его параметры неверны</string>
-    <string name="scramble_needs_openvpn2">Опция XOR \'scramble\' поддерживается только ядром OpenVPN 2.x. Отключите \"Использовать ядро OpenVPN 3\" в настройках.</string>
     <string name="totp_invalid">Неверные настройки TOTP: %1$s</string>
 </resources>

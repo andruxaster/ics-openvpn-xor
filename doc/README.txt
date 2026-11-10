@@ -15,7 +15,7 @@ See the file todo.txt for ideas/not-yet-implemented features (and the bug tracke
 
 Build instructions:
 
-- Install sdk, ndk, cmake (e.g. with Android studio), swig (3.0+), on
+- Install sdk, ndk, cmake (e.g. with Android studio), on
   Windows perl might be needed for mbedtls
 
 Fetch the git submodules (the default urls for the submodules work as
@@ -24,8 +24,7 @@ long as the main repo url is on github):
   git submodule init
   git submodule update
 
-Build the project using "gradle build" (Or use Android Studio). Ensure that
-the swig executable is the path; otherwise, the build will fail.
+Build the project using "gradle build" (Or use Android Studio).
 
 Android studio tends to the whole build of binaries in its sync gradle
 phase to 15 minutes for initial gradle sync are completely normal.

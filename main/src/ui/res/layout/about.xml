@@ -43,11 +43,6 @@
                 tools:text="OpenVPN version 874981723" />
 
         <TextView
-                android:id="@+id/version_ovpn3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:text="OpenVPN3 core version 8df8718283" />
-        <TextView
                 android:id="@+id/openssl_version"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

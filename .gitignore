@@ -6,7 +6,6 @@ main/.cxx/
 .DS_Store
 .navigation
 google-breakpad/
-ovpn3/boost
 polarssl
 local.properties
 proguard-project.txt
@@ -18,10 +17,8 @@ cache.properties
 .idea
 *.iml
 
-main/openvpn3
 
 
-main/src/ovpn3/java/net/openvpn/ovpn3
 main/.externalNativeBuild
 main/.cxx
 .synopsys

@@ -26,8 +26,6 @@ public class NativeUtils {
 
     public static native String getOpenVPN2GitVersion();
 
-    public static native String getOpenVPN3GitVersion();
-
     private static native String getOpenSSLVersionString();
 
     public static String getOpenSSLVersion() {

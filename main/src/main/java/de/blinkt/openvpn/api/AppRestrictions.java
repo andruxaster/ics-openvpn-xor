@@ -159,7 +159,6 @@ public class AppRestrictions {
         applyBooleanDefaultPrefsRestriction(restrictions, "restartvpnonboot", defaultPrefs, "restartvpnonboot");
         applyBooleanDefaultPrefsRestriction(restrictions,"preferencryption", defaultPrefs, "preferencryption" );
         applyBooleanDefaultPrefsRestriction(restrictions, "netchangereconnect", defaultPrefs, "netchangereconnect");
-        applyBooleanDefaultPrefsRestriction(restrictions, "ovpn3", defaultPrefs, "ovpn3");
 
         boolean minimalUi = restrictions.getBoolean("minimal_ui", false);
         if (minimalUi && defaultPrefs.getBoolean("showlogwindow", true)){

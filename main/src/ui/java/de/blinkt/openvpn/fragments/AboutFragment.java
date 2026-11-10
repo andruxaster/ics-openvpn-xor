@@ -34,7 +34,6 @@ import androidx.fragment.app.Fragment;
 
 import com.android.vending.billing.IInAppBillingService;
 
-import de.blinkt.openvpn.BuildConfig;
 import de.blinkt.openvpn.core.NativeUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -86,14 +85,9 @@ public class AboutFragment extends Fragment implements View.OnClickListener {
         ver.setText(getString(R.string.version_info, name, version));
 
         TextView verO2 = v.findViewById(R.id.version_ovpn2);
-        TextView verO3 = v.findViewById(R.id.version_ovpn3);
         TextView osslVer = v.findViewById(R.id.openssl_version);
 
         verO2.setText(String.format(Locale.US, "OpenVPN version: %s", NativeUtils.getOpenVPN2GitVersion()));
-        if (BuildConfig.openvpn3)
-            verO3.setText(String.format(Locale.US, "OpenVPN3 core version: %s", NativeUtils.getOpenVPN3GitVersion()));
-        else
-            verO3.setText("(OpenVPN 2.x only build. No OpenVPN 3.x core in this app)");
 
 
         osslVer.setText(String.format(Locale.US, "OpenSSL version: %s", NativeUtils.getOpenSSLVersion()));

@@ -93,7 +93,7 @@ jobs:
   
     - if: matrix.build-mode == 'manual'
       name: Build the app
-      run: ./gradlew assembleUiOvpn23Release
+      run: ./gradlew assembleUiRelease
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3

@@ -39,7 +39,7 @@ public class Connection implements Serializable, Cloneable {
     private static final long serialVersionUID = 92031902903829089L;
 
 
-    public String getConnectionBlock(boolean isOpenVPN3) {
+    public String getConnectionBlock() {
         String cfg = "";
 
         // Server Address
@@ -56,10 +56,8 @@ public class Connection implements Serializable, Cloneable {
             cfg += String.format(Locale.US, " connect-timeout  %d\n", mConnectTimeout);
 
 
-        // OpenVPN 2.x manages proxy connection via management interface and OpenVPN 3.x
-        // does not support them in <connection> blocks
-        if (!isOpenVPN3)
-            cfg += getHttpProxySettings(false);
+        // OpenVPN 2.x manages proxy connection via management interface
+        cfg += getHttpProxySettings(false);
 
         if (usesProxyOptions() && mProxyType == ProxyType.SOCKS5) {
             cfg+=String.format(Locale.US,"socks-proxy %s %s\n", mProxyName, mProxyPort);
@@ -99,10 +97,7 @@ public class Connection implements Serializable, Cloneable {
         return (Connection) super.clone();
     }
 
-    public boolean isOnlyRemote(boolean configForOvpn3) {
-        if (configForOvpn3 && mProxyType != ProxyType.NONE) {
-            return false;
-        }
+    public boolean isOnlyRemote() {
         return TextUtils.isEmpty(mCustomConfiguration) || !mUseCustomConfig;
     }
 
