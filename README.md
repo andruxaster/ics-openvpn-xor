@@ -1,6 +1,16 @@
-OpenVPN for Android
+OpenVPN for Android — XOR + TOTP
 =============
-![build status](https://github.com/schwabe/ics-openvpn/actions/workflows/build.yaml/badge.svg)
+![build status](https://github.com/andruxaster/ics-openvpn-xor/actions/workflows/build.yaml/badge.svg)
+
+Форк [schwabe/ics-openvpn](https://github.com/schwabe/ics-openvpn) с поддержкой XOR-обфускации
+(`scramble`, совместима с Tunnelblick / OpenVPN-XOR-windows), встроенным генератором TOTP-кодов
+и без ядра OpenVPN 3. Подробности и инструкция по сборке — в [XOR-TOTP.md](XOR-TOTP.md).
+
+Готовые APK: вкладка **Actions** → последний успешный запуск **Build** → артефакт `build-Ui-release-apk`.
+
+---
+
+*Ниже — оригинальный README upstream-проекта.*
 
 Note to other developers 
 ------------------------

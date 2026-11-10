@@ -1,12 +1,9 @@
-[submodule "main/openvpn"]
-	path = main/src/main/cpp/openvpn
-	url = ../../schwabe/openvpn.git
 [submodule "main/openssl"]
 	path = main/src/main/cpp/openssl
-	url = ../../schwabe/platform_external_openssl.git
+	url = https://github.com/schwabe/platform_external_openssl.git
 [submodule "main/src/main/cpp/mbedtls"]
 	path = main/src/main/cpp/mbedtls
-	url = ../../ARMmbed/mbedtls.git
+	url = https://github.com/ARMmbed/mbedtls.git
 [submodule "main/src/main/cpp/lz4"]
 	path = main/src/main/cpp/lz4
-	url = ../../lz4/lz4.git
+	url = https://github.com/lz4/lz4.git
