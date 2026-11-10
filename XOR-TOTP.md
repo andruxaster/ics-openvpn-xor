@@ -46,7 +46,7 @@ scramble obfuscate <ключ>
 ## Сборка через GitHub Actions
 
 Каждый push собирает APK. Ещё сборку можно запустить вручную: **Actions → Build → Run workflow**.
-Готовый файл — в артефакте `build-Ui-release-apk` (`main-ui-universal-release.apk`).
+Готовый файл — в артефакте `build-Ui-release-apk` (`main-ui-release.apk`, один файл для всех архитектур).
 Он подписан отладочным ключом, поэтому устанавливается сразу.
 
 ## Сборка на Debian 13
@@ -82,7 +82,7 @@ echo "sdk.dir=$ANDROID_HOME" > local.properties
 ./gradlew assembleUiRelease -PicsopenvpnDebugSign
 ```
 
-Готовый APK: `main/build/outputs/apk/ui/release/main-ui-universal-release.apk`.
+Готовый APK: `main/build/outputs/apk/ui/release/main-ui-release.apk`. Он один на все архитектуры (arm64, armv7, x86, x86_64).
 
 Установка: `adb install -r <apk>` или просто скопировать файл на телефон.
 Официальный OpenVPN for Android из Google Play сначала нужно удалить: имя пакета то же, а подпись другая.
