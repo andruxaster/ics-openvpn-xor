@@ -201,13 +201,37 @@ public class ProfileManager {
             }
             instance.loadVPNList(context);
             profile = get(profileUUID);
+            /* The profile list in the shared preferences may be stale in this process
+             * (MODE_MULTI_PROCESS is unreliable), the profile file itself is named
+             * after the UUID, so try to load it directly */
+            if ((profile == null || profile.mVersion < version) && profileUUID != null) {
+                instance.loadVpnEntry(context, profileUUID);
+                profile = get(profileUUID);
+            }
         }
 
         if (tried > 5) {
             int ver = profile == null ? -1 : profile.mVersion;
             VpnStatus.logError(String.format(Locale.US, "Used x %d tries to get current version (%d/%d) of the profile", tried, ver, version));
+            if (profile == null)
+                logProfileDiagnostics(context, profileUUID);
         }
         return profile;
+    }
+
+    private static void logProfileDiagnostics(Context context, String profileUUID) {
+        Set<String> vlist = Preferences.getSharedPreferencesMulti(PREFS_NAME, context)
+                .getStringSet("vpnlist", null);
+        boolean inList = vlist != null && vlist.contains(profileUUID);
+        StringBuilder files = new StringBuilder();
+        for (String ext : new String[]{".vp", ".cp", ".cpold"}) {
+            File f = context.getFileStreamPath(profileUUID + ext);
+            files.append(ext).append('=').append(f.exists() ? f.length() + "B" : "missing").append(' ');
+        }
+        VpnStatus.logError(String.format(Locale.US,
+                "Profile %s not loadable: in list=%b, profiles in list=%d, encryption=%b, files: %s",
+                profileUUID, inList, vlist == null ? 0 : vlist.size(),
+                ProfileEncryption.encryptionEnabled(), files.toString().trim()));
     }
 
     public static VpnProfile getLastConnectedVpn() {
@@ -372,7 +396,7 @@ public class ProfileManager {
             } else {
                 profiles.put(vp.getUUID().toString(), vp);
             }
-        } catch (IOException | ClassNotFoundException | GeneralSecurityException e) {
+        } catch (IOException | ClassNotFoundException | GeneralSecurityException | RuntimeException e) {
             if (!vpnentry.equals(TEMPORARY_PROFILE_FILENAME))
                 VpnStatus.logException("Loading VPN List:" + vpnentry, e);
         } finally {
