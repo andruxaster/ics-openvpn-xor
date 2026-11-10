@@ -456,4 +456,28 @@ remote home.evil.cloud 65443 udp
         Assert.assertTrue(vp.mConnections[0].mUseCustomConfig)
     }
 
+    @Test
+    @Throws(IOException::class, ConfigParser.ConfigParseError::class)
+    fun testStaticChallengeImport() {
+        val config = ("client\n"
+                + "remote vpn.example.com 443 udp\n"
+                + "auth-user-pass\n"
+                + "static-challenge \"TOTP code\" 1\n"
+                + "scramble obfuscate 12345\n")
+
+        val cp = ConfigParser()
+        cp.parseConfig(StringReader(config))
+        val vp = cp.convertProfile()
+
+        val sc = vp.staticChallenge
+        Assert.assertNotNull(sc)
+        Assert.assertEquals("TOTP code", sc!!.text)
+        Assert.assertTrue(sc.echo)
+        Assert.assertTrue(vp.needsStaticChallengeInput())
+
+        vp.mUseTotp = true
+        vp.mTotpSecret = "GEZDGNBVGY3TQOJQ"
+        Assert.assertFalse(vp.needsStaticChallengeInput())
+    }
+
 }

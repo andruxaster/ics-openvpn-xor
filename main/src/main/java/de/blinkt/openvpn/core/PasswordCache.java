@@ -14,10 +14,12 @@ import java.util.UUID;
 public class PasswordCache {
     public static final int PKCS12ORCERTPASSWORD = 2;
     public static final int AUTHPASSWORD = 3;
+    public static final int CHALLENGERESPONSE = 4;
     private static PasswordCache mInstance;
     final private UUID mUuid;
     private String mKeyOrPkcs12Password;
     private String mAuthPassword;
+    private String mChallengeResponse;
 
     private PasswordCache(UUID uuid) {
         mUuid = uuid;
@@ -45,6 +47,14 @@ public class PasswordCache {
         return pwcopy;
     }
 
+    /** Response to a static-challenge (e.g. a TOTP code) entered by the user, used only once */
+    public static String getChallengeResponse(UUID uuid, boolean reset) {
+        String copy = getInstance(uuid).mChallengeResponse;
+        if (reset)
+            getInstance(uuid).mChallengeResponse = null;
+        return copy;
+    }
+
     public static void setCachedPassword(String uuid, int type, String password) {
         PasswordCache instance = getInstance(UUID.fromString(uuid));
         switch (type) {
@@ -53,6 +63,9 @@ public class PasswordCache {
                 break;
             case AUTHPASSWORD:
                 instance.mAuthPassword = password;
+                break;
+            case CHALLENGERESPONSE:
+                instance.mChallengeResponse = password;
                 break;
         }
     }

@@ -30,6 +30,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.io.IOException;
 
@@ -87,6 +88,7 @@ public class LaunchVPN extends Activity {
     private boolean mCmfixed = false;
     private String mTransientAuthPW;
     private String mTransientCertOrPKCS12PW;
+    private String mTransientChallengeResponse;
     private String mSelectedProfileReason;
 
     @Override
@@ -105,6 +107,8 @@ public class LaunchVPN extends Activity {
                     service.setCachedPassword(mSelectedProfile.getUUIDString(), PasswordCache.AUTHPASSWORD, mTransientAuthPW);
                 if (mTransientCertOrPKCS12PW != null)
                     service.setCachedPassword(mSelectedProfile.getUUIDString(), PasswordCache.PKCS12ORCERTPASSWORD, mTransientCertOrPKCS12PW);
+                if (mTransientChallengeResponse != null)
+                    service.setCachedPassword(mSelectedProfile.getUUIDString(), PasswordCache.CHALLENGERESPONSE, mTransientChallengeResponse);
 
                 onActivityResult(START_VPN_PROFILE, Activity.RESULT_OK, null);
 
@@ -184,6 +188,22 @@ public class LaunchVPN extends Activity {
             ((EditText) userpwlayout.findViewById(R.id.username)).setText(mSelectedProfile.mUsername);
             ((EditText) userpwlayout.findViewById(R.id.password)).setText(mSelectedProfile.mPassword);
             ((CheckBox) userpwlayout.findViewById(R.id.save_password)).setChecked(!TextUtils.isEmpty(mSelectedProfile.mPassword));
+
+            VpnProfile.StaticChallenge sc = mSelectedProfile.needsStaticChallengeInput()
+                    ? mSelectedProfile.getStaticChallenge() : null;
+            if (sc != null) {
+                TextView challengeText = userpwlayout.findViewById(R.id.challenge_text);
+                EditText challengeResponse = userpwlayout.findViewById(R.id.challenge_response);
+                challengeText.setText(sc.text);
+                challengeText.setVisibility(View.VISIBLE);
+                challengeResponse.setVisibility(View.VISIBLE);
+                challengeResponse.setInputType(sc.echo
+                        ? InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                        : InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                // username and password are usually saved, go straight to the code
+                if (!TextUtils.isEmpty(mSelectedProfile.mUsername) && !TextUtils.isEmpty(mSelectedProfile.mPassword))
+                    challengeResponse.requestFocus();
+            }
             ((CheckBox) userpwlayout.findViewById(R.id.show_password)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -215,6 +235,10 @@ public class LaunchVPN extends Activity {
                         mSelectedProfile.addChangeLogEntry("saved password");
                         ProfileManager.saveProfile( LaunchVPN.this, mSelectedProfile);
 
+                        if (mSelectedProfile.needsStaticChallengeInput())
+                            mTransientChallengeResponse = ((EditText) userpwlayout.findViewById(R.id.challenge_response))
+                                    .getText().toString().trim();
+
                     } else {
                         mTransientCertOrPKCS12PW = entry.getText().toString();
                     }
@@ -241,7 +265,8 @@ public class LaunchVPN extends Activity {
 
         if (requestCode == START_VPN_PROFILE) {
             if (resultCode == Activity.RESULT_OK) {
-                int needpw = mSelectedProfile.needUserPWInput(mTransientCertOrPKCS12PW, mTransientAuthPW);
+                int needpw = mSelectedProfile.needUserPWInput(mTransientCertOrPKCS12PW, mTransientAuthPW,
+                        mTransientChallengeResponse);
                 if (needpw != 0) {
                     VpnStatus.updateStateString("USER_VPN_PASSWORD", "", R.string.state_user_vpn_password,
                             ConnectionStatus.LEVEL_WAITING_FOR_USER_INPUT);

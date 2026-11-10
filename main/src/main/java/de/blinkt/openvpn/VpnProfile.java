@@ -1155,6 +1155,84 @@ public class VpnProfile implements Serializable, Cloneable {
     }
 
     public int needUserPWInput(String transientCertOrPkcs12PW, String mTransientAuthPW) {
+        return needUserPWInput(transientCertOrPkcs12PW, mTransientAuthPW, null);
+    }
+
+    /** Static challenge declared in the config: text and whether the response may be echoed */
+    public static class StaticChallenge {
+        public final String text;
+        public final boolean echo;
+
+        StaticChallenge(String text, boolean echo) {
+            this.text = text;
+            this.echo = echo;
+        }
+    }
+
+    /**
+     * @return the static-challenge from the custom options of the profile or its
+     * connections, or null if the config does not use one
+     */
+    @Nullable
+    public StaticChallenge getStaticChallenge() {
+        StaticChallenge sc = null;
+        if (mUseCustomConfig)
+            sc = parseStaticChallenge(mCustomConfigOptions);
+        if (sc == null && mConnections != null) {
+            for (Connection conn : mConnections) {
+                if (conn.mEnabled && conn.mUseCustomConfig)
+                    sc = parseStaticChallenge(conn.mCustomConfiguration);
+                if (sc != null)
+                    break;
+            }
+        }
+        return sc;
+    }
+
+    static StaticChallenge parseStaticChallenge(String config) {
+        if (config == null)
+            return null;
+        for (String line : config.split("\\r?\\n")) {
+            line = line.trim();
+            if (!line.startsWith("static-challenge"))
+                continue;
+            String rest = line.substring("static-challenge".length());
+            if (rest.isEmpty() || !Character.isWhitespace(rest.charAt(0)))
+                continue;
+            rest = rest.trim();
+            String text;
+            String after;
+            if (rest.startsWith("\"") || rest.startsWith("'")) {
+                char q = rest.charAt(0);
+                StringBuilder sb = new StringBuilder();
+                int i = 1;
+                for (; i < rest.length() && rest.charAt(i) != q; i++) {
+                    char c = rest.charAt(i);
+                    if (c == '\\' && q == '"' && i + 1 < rest.length())
+                        c = rest.charAt(++i);
+                    sb.append(c);
+                }
+                text = sb.toString();
+                after = i < rest.length() ? rest.substring(i + 1).trim() : "";
+            } else {
+                String[] parts = rest.split("\\s+", 2);
+                text = parts[0];
+                after = parts.length > 1 ? parts[1] : "";
+            }
+            boolean echo = after.startsWith("1");
+            return new StaticChallenge(text, echo);
+        }
+        return null;
+    }
+
+    /** True if the user has to type the static-challenge response himself */
+    public boolean needsStaticChallengeInput() {
+        return isUserPWAuth() && getStaticChallenge() != null
+                && !(mUseTotp && !TextUtils.isEmpty(mTotpSecret));
+    }
+
+    public int needUserPWInput(String transientCertOrPkcs12PW, String mTransientAuthPW,
+                               String transientChallengeResponse) {
         if ((mAuthenticationType == TYPE_PKCS12 || mAuthenticationType == TYPE_USERPASS_PKCS12) &&
                 (mPKCS12Password == null || mPKCS12Password.equals(""))) {
             if (transientCertOrPkcs12PW == null)
@@ -1173,6 +1251,9 @@ public class VpnProfile implements Serializable, Cloneable {
                         (TextUtils.isEmpty(mPassword) && mTransientAuthPW == null))) {
             return R.string.password;
         }
+
+        if (needsStaticChallengeInput() && transientChallengeResponse == null)
+            return R.string.password;
         return 0;
     }
 

@@ -36,6 +36,7 @@
     <string name="custom_option_warning">Enter custom OpenVPN options. Use with caution. Also note that many of the tun related OpenVPN settings cannot be supported by design of the VPNSettings. If you think an important option is missing contact the author</string>
     <string name="auth_username">Username (leave empty for no auth)</string>
     <string name="auth_pwquery">Password</string>
+    <string name="challenge_response">Response code</string>
     <string name="totp_use">Generate TOTP one-time codes (2FA)</string>
     <string name="totp_secret">TOTP secret</string>
     <string name="totp_secret_hint">Base32 secret or otpauth://totp/… URI</string>

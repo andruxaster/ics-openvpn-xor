@@ -751,7 +751,10 @@ public class OpenVpnManagementThread implements Runnable, OpenVPNManagement {
     }
 
     /**
-     * Combines the password with an app generated TOTP code.
+     * Combines the password with an app generated TOTP code or the static-challenge
+     * response the user typed in the connect dialog.
+     * Returns null if a static challenge is requested but no response is available,
+     * the user is then asked for input.
      * <p>
      * argument has the form {@code Need 'Auth' username/password [SC:<flag>,<challenge text>]}
      * flag bit 0: echo, bit 1: concat format (OpenVPN 2.7+ "static-challenge text echo concat")
@@ -770,12 +773,17 @@ public class OpenVpnManagementThread implements Runnable, OpenVPNManagement {
             }
             String challenge = comma >= 0 ? scPart.substring(comma + 1) : "";
 
-            if (code == null) {
-                VpnStatus.logWarning("Server requests static challenge '" + challenge
-                        + "' but no TOTP secret is configured for this profile");
-                return pw;
+            if (code != null) {
+                VpnStatus.logInfo("Answering static challenge '" + challenge + "' with generated TOTP code");
+            } else {
+                code = PasswordCache.getChallengeResponse(mProfile.getUUID(), true);
+                if (code == null) {
+                    VpnStatus.logError("Static challenge '" + challenge
+                            + "' requested but no response available. Reconnect and enter the code.");
+                    return null;
+                }
+                VpnStatus.logInfo("Answering static challenge '" + challenge + "' with the entered response");
             }
-            VpnStatus.logInfo("Answering static challenge '" + challenge + "' with generated TOTP code");
             if ((flags & 2) != 0)
                 return pw + code;
 
